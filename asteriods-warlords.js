@@ -148,7 +148,7 @@ function create() {
     horizontalDivide = new Phaser.Line(0, 300, 800, 300);
 
     players = [
-        new Ship(100, 100, 0xFFFFFF, new Controls(
+        new Ship(100, 100, 0xFF0000, new Controls(
             game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
             game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
             game.input.keyboard.addKey(Phaser.Keyboard.UP),
@@ -159,7 +159,20 @@ function create() {
             game.input.keyboard.addKey(Phaser.Keyboard.L),
             game.input.keyboard.addKey(Phaser.Keyboard.I),
             game.input.keyboard.addKey(Phaser.Keyboard.H)
-        ))];
+        )),
+        new Ship(300, 300, 0xFF00FF, new Controls(
+            game.input.keyboard.addKey(Phaser.Keyboard.A),
+            game.input.keyboard.addKey(Phaser.Keyboard.D),
+            game.input.keyboard.addKey(Phaser.Keyboard.W),
+            game.input.keyboard.addKey(Phaser.Keyboard.F)
+        )),
+        new Ship(400, 400, 0x00FFFF, new Controls(
+            game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_1),
+            game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_3),
+            game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_5),
+            game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_0)
+        ))
+    ];
     graphics = game.add.graphics(0, 0);
 }
 
