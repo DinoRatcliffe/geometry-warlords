@@ -23,7 +23,7 @@ function rotateVec(vec, rot) {
 // "classes"
 function Ship(x, y, color, controls) {
     this.ROTATION_SPEED = 2.5;
-    this.THRUST_POWER = 20;
+    this.THRUST_POWER = 0.02;
 
     //properties
     this.center = new Phaser.Point(x, y);
@@ -32,12 +32,12 @@ function Ship(x, y, color, controls) {
     this.size = 10;
     this.color = color;
 
-    this.velocityVec = normalize([1, 0]);
+    this.velocityVec = [0, 0];
 
     //member functions
     this.thrust = function() {
         var rotationVec = normalize(rotateVec([1, 0], this.rotation * (Math.PI/180)));
-        this.veclocityVec = [
+        this.velocityVec = [
             this.velocityVec[0] + rotationVec[0] * this.THRUST_POWER,
             this.velocityVec[1] + rotationVec[1] * this.THRUST_POWER
         ];
