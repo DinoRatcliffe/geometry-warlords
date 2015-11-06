@@ -36,7 +36,7 @@ function Ship(x, y, color, controls) {
 
     //member functions
     this.thrust = function() {
-        var rotationVec = normalize(rotateVec([1, 0], this.rotation * (Math.PI/180)));
+        var rotationVec = normalize(rotateVec([0, -1], this.rotation * (Math.PI/180)));
         this.velocityVec = [
             this.velocityVec[0] + rotationVec[0] * this.THRUST_POWER,
             this.velocityVec[1] + rotationVec[1] * this.THRUST_POWER
@@ -65,7 +65,6 @@ function Ship(x, y, color, controls) {
         }
 
         if (this.controls && this.controls.thrust.isDown) {
-            console.log('thrust');
             this.thrust();
         }
 
@@ -82,13 +81,35 @@ function Ship(x, y, color, controls) {
        var topPoint = new Phaser.Point(center.x, center.y - size);
        var rightPoint = new Phaser.Point(center.x, center.y - size);
        var leftPoint = new Phaser.Point(center.x, center.y - size);
+
+       var rightFire = new Phaser.Point(center.x, center.y - size);
+       var leftFire = new Phaser.Point(center.x, center.y - size);
+       rightFire.rotate(center.x, center.y, (360/3) + 25 + this.rotation, true);
+       leftFire.rotate(center.x, center.y, ((360/3*2) - 25) + this.rotation, true);
+
        topPoint.rotate(center.x, center.y, this.rotation, true);
        rightPoint.rotate(center.x, center.y, (360/3) + this.rotation, true);
        leftPoint.rotate(center.x, center.y, (360/3*2) + this.rotation, true);
 
+       if (this.controls && this.controls.thrust.isDown) {
+           var topFire = new Phaser.Point(center.x, center.y + size + getRandomInt(5, 15));
+
+           topFire.rotate(center.x, center.y, this.rotation, true);
+          
+           graphics.lineStyle(1, 0xFFFFFF, getRandomInt(30, 90)/100);
+           graphics.moveTo(rightFire.x, rightFire.y);
+           graphics.lineTo(leftFire.x, leftFire.y);
+           graphics.lineTo(topFire.x, topFire.y);
+           graphics.lineTo(rightFire.x, rightFire.y);
+       }
+
+       graphics.lineStyle(1, 0xFFFFFF, 1);
+       graphics.moveTo(rightFire.x, rightFire.y);
+       graphics.lineTo(leftFire.x, leftFire.y);
+
        this.polygon = new Phaser.Polygon([topPoint, rightPoint, leftPoint]);
        var points = this.polygon.points;
-       graphics.lineStyle(1, this.color, 1);
+       graphics.lineStyle(1.5, this.color, 1);
        graphics.moveTo(points[points.length-1].x, points[points.length-1].y);
        points.forEach(function (point) {
            graphics.lineTo(point.x, point.y);
@@ -131,9 +152,14 @@ function create() {
             game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
             game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
             game.input.keyboard.addKey(Phaser.Keyboard.UP),
-            game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
+            game.input.keyboard.addKey(Phaser.Keyboard.CONTROL)
         )), 
-        new Ship(200, 200, 0x00FF00)];
+        new Ship(200, 200, 0x00FF00, new Controls(
+            game.input.keyboard.addKey(Phaser.Keyboard.J),
+            game.input.keyboard.addKey(Phaser.Keyboard.L),
+            game.input.keyboard.addKey(Phaser.Keyboard.I),
+            game.input.keyboard.addKey(Phaser.Keyboard.H)
+        ))];
     graphics = game.add.graphics(0, 0);
 }
 
